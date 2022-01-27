@@ -8,8 +8,8 @@ const service='http://devapi.coolcalc.com/search-equipment';
 
 //basic authentication 
 const verify = function(){
-    let ClientId = 'DCNE';
-    let APIKey = 'letmein';
+    let ClientId = '';
+    let APIKey = '';
     let encoded = Buffer.from(ClientId + ':' + APIKey).toString('base64');
     return encoded;
 }
