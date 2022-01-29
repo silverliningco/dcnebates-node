@@ -3,8 +3,7 @@ const router = Router();
 
 const axios = require('axios');
 
-
-const service='http://devapi.coolcalc.com/search-equipment';
+const service = 'http://devapi.coolcalc.com/';
 
 //basic authentication 
 const verify = function(){
@@ -15,20 +14,51 @@ const verify = function(){
 }
 
 // routes
-router.get('*', async(req, res) => {
+router.get('/result/:params', async(req, res) => {
 
     const myUrl = req.originalUrl;
-    const newParams = myUrl.replace('/?params=', '?params=' );
-    
-    
-     /* //send the headers
-     res.setHeader('Content-Type', response.headers['content-type']);
-     res.setHeader('allow', response.headers['allow']);
-     res.setHeader('Access-Control-Expose-Headers', 'Location, Allow');
-  */
+    const newParams = myUrl.replace('/result/', '?params=' );
+
+    console.log(newParams);
+
 
      try {
-        let response = await axios.get(service,  {
+        let response = await axios.get(service + "search-equipment",  {
+            params: {
+                params: myUrl
+            },
+            headers:{
+                Authorization: `Basic ${verify()}`
+            }
+        });
+        res.json({
+            ok: true,
+            msg: 'estamos en result',
+            body: response.data,
+            auth: `Basic ${verify()}`
+
+        });        
+    } catch (err) {
+        res.json({
+            url1: result,
+            url2: newParams,
+            error: err,
+            auth: `Basic ${verify()}`
+        }); 
+    }
+
+});
+
+
+
+router.get('/detail/:cod', async(req, res) => { 
+
+    const myUrl = req.originalUrl;
+    const newParams = myUrl.replace('/detail/', '?ahri_refs=' );
+    console.log(newParams);
+
+     try {
+        let response = await axios.get(service + "view-result",  {
             params: {
                 params: newParams
             },
@@ -38,14 +68,14 @@ router.get('*', async(req, res) => {
         });
         res.json({
             ok: true,
-            msg: 'estamos en heroku',
+            msg: 'estamos en detail',
             body: response.data,
             auth: `Basic ${verify()}`
 
         });        
     } catch (err) {
         res.json({
-            url1: service,
+            url1: detail,
             url2: newParams,
             error: err,
             auth: `Basic ${verify()}`
@@ -53,9 +83,6 @@ router.get('*', async(req, res) => {
     }
 
 })
-
-
-
 
 
 module.exports = router;
