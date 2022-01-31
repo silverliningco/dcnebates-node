@@ -3,10 +3,9 @@ const router = Router();
 
 const axios = require('axios');
 
-//const service = 'http://devapi.coolcalc.com/';
+const service = 'http://devapi.coolcalc.com';
 
-const result = 'http://devapi.coolcalc.com/search-equipment';
-const detail = 'http://devapi.coolcalc.com/view-result';
+const detail = service + 'view-result';
    
 //basic authentication 
 const verify = function(){
@@ -17,17 +16,13 @@ const verify = function(){
 }
 
 // routes
-router.get('/result/:params', async(req, res) => {
+router.get('/search-equipment', async(req, res) => {
 
     const myUrl = req.originalUrl;
-    const newParams = myUrl.replace('/result/', '?params=' );
-
-    console.log(newParams);
 
      try {
-        let response = await axios.get(result,  {
+        let response = await axios.get(service+myUrl,  {
             params: {
-                params: {newParams}
             },
             headers:{
                 Authorization: `Basic ${verify()}`
@@ -37,14 +32,10 @@ router.get('/result/:params', async(req, res) => {
             ok: true,
             msg: 'estamos en result',
             body: response.data
-            //auth: `Basic ${verify()}`
         });       
     } catch (err) {
         res.json({
-            url1: result,
-            url2: newParams,
             error: err
-            //auth: `Basic ${verify()}`
         }); 
     }
 
@@ -52,15 +43,11 @@ router.get('/result/:params', async(req, res) => {
 
 
 
-router.get('/detail/:cod', async(req, res) => { 
-
-    const myUrl = req.originalUrl;
-    const newParams = myUrl.replace('/detail/', '?ahri_refs=' );
+router.get('/view-result', async(req, res) => { 
 
      try {
-        let response = await axios.get(detail,  {
+        let response = await axios.get(service+myUrl,  {
             params: {
-                params: newParams
             },
             headers:{
                 Authorization: `Basic ${verify()}`
@@ -70,15 +57,11 @@ router.get('/detail/:cod', async(req, res) => {
             ok: true,
             msg: 'estamos en detail',
             body: response.data
-            //auth: `Basic ${verify()}`
 
         });        
     } catch (err) {
         res.json({
-            url1: detail,
-            url2: newParams,
             error: err
-            //auth: `Basic ${verify()}`
         }); 
     }
 
