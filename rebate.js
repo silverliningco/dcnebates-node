@@ -16,14 +16,39 @@ const verify = function(){
 }
 
 // routes
-router.get('/search-equipment', async(req, res) => {
 
-    const myUrl = req.originalUrl;
+// step 1 to find a combination
+router.get('/product-lines', async(req, res) => { 
+
+    let myUrl = req.originalUrl;
 
      try {
-        let response = await axios.get(service+myUrl,  {
-            params: {
-            },
+        let response = await axios.get(service + myUrl,  {
+            headers:{
+                Authorization: `Basic ${verify()}`
+            }
+        });
+        res.json({
+            ok: true,
+            msg: 'estamos en product lines',
+            body: response.data
+
+        });        
+    } catch (err) {
+        res.json({
+            error: err
+        }); 
+    }
+
+})
+
+// step 2 to find a combination
+router.get('/search-equipment', async(req, res) => {
+
+    let myUrl = req.originalUrl;
+
+     try {
+        let response = await axios.get(service + myUrl ,  {
             headers:{
                 Authorization: `Basic ${verify()}`
             }
@@ -42,13 +67,13 @@ router.get('/search-equipment', async(req, res) => {
 });
 
 
+// step 3 to find a combination
+router.get('/view-detail', async(req, res) => { 
 
-router.get('/view-result', async(req, res) => { 
+    let myUrl = req.originalUrl;
 
      try {
-        let response = await axios.get(service+myUrl,  {
-            params: {
-            },
+        let response = await axios.get(service + myUrl,  {
             headers:{
                 Authorization: `Basic ${verify()}`
             }
