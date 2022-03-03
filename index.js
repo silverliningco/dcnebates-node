@@ -1,3 +1,5 @@
+//run locally -> npm run start:dev
+
 const express = require('express');
 const cors = require('cors');
 

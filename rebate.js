@@ -4,8 +4,6 @@ const router = Router();
 const axios = require('axios');
 
 const service = 'http://devapi.coolcalc.com';
-
-const detail = service + 'view-result';
    
 //basic authentication 
 const verify = function(){
@@ -40,7 +38,7 @@ router.get('/product-lines', async(req, res) => {
         }); 
     }
 
-})
+});
 
 // step 2 to find a combination
 router.get('/search-equipment', async(req, res) => {
@@ -72,6 +70,8 @@ router.get('/view-detail', async(req, res) => {
 
     let myUrl = req.originalUrl;
 
+    //console.log(myUrl);
+
      try {
         let response = await axios.get(service + myUrl,  {
             headers:{
@@ -90,7 +90,36 @@ router.get('/view-detail', async(req, res) => {
         }); 
     }
 
-})
+});
+
+//get Utilities 
+router.get('/load-utilities', async(req, res) => { 
+
+    //console.log(req);
+
+    let myUrl = req.originalUrl;
+
+     try {
+        let response = await axios.get(service + myUrl,  {
+            headers:{
+                Authorization: `Basic ${verify()}`
+            }
+        });
+        res.json({
+            ok: true,
+            msg: 'estamos en detail',
+            body: response.data
+
+        });        
+    } catch (err) {
+        res.json({
+            error: err
+        }); 
+    }
+
+});
+
+
 
 
 module.exports = router;
