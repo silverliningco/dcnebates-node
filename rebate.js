@@ -1,125 +1,54 @@
 const { Router} = require('express');
 const router = Router();
-
 const axios = require('axios');
-
-const service = 'http://devapi.coolcalc.com';
+const service = 'http://localhost:8081';
    
-//basic authentication 
+// Basic authentication 
 const verify = function(){
-    let ClientId = '';
-    let APIKey = '';
+    let ClientId = 'silverliningco';
+    let APIKey = 'letmeinple@se';
     let encoded = Buffer.from(ClientId + ':' + APIKey).toString('base64');
     return encoded;
 }
 
-// routes
-
-// step 1 to find a combination
-router.get('/product-lines', async(req, res) => { 
-
+// Handle function
+var handleFunc = function(req, res) {
     let myUrl = req.originalUrl;
+    
+    axios.get(service + myUrl,  {
+        headers:{
+            Authorization: `Basic ${verify()}`
+        }
+    }).then(response => {
+        
+        res.json(response.data);
 
-     try {
-        let response = await axios.get(service + myUrl,  {
-            headers:{
-                Authorization: `Basic ${verify()}`
-            }
-        });
-        res.json({
-            ok: true,
-            msg: 'estamos en product lines',
-            body: response.data
+    }).catch(error => {
+        if (error.response) {
+            res.setHeader('Content-Type', error.response.headers['content-type']);
+            return res.status(error.response.status).json(error.response.data);
+        } else if (error.request) {
+            res.json({
+                error: error.request
+            });
+        } else {
+            console.log('Error', error.message);
+        }
+    });
+};
 
-        });        
-    } catch (err) {
-        res.json({
-            error: err
-        }); 
-    }
+// Routes
 
-});
+// Get product lines
+router.get('/product-lines', async(req, res) => await handleFunc(req, res));
 
-// step 2 to find a combination
-router.get('/search-equipment', async(req, res) => {
+// Get equipment search
+router.get('/search-equipment', async(req, res) => await handleFunc(req, res));
 
-    let myUrl = req.originalUrl;
-
-     try {
-        let response = await axios.get(service + myUrl ,  {
-            headers:{
-                Authorization: `Basic ${verify()}`
-            }
-        });
-        res.json({
-            ok: true,
-            msg: 'estamos en result',
-            body: response.data
-        });       
-    } catch (err) {
-        res.json({
-            error: err
-        }); 
-    }
-
-});
-
-
-// step 3 to find a combination
-router.get('/view-detail', async(req, res) => { 
-
-    let myUrl = req.originalUrl;
-
-    //console.log(myUrl);
-
-     try {
-        let response = await axios.get(service + myUrl,  {
-            headers:{
-                Authorization: `Basic ${verify()}`
-            }
-        });
-        res.json({
-            ok: true,
-            msg: 'estamos en detail',
-            body: response.data
-
-        });        
-    } catch (err) {
-        res.json({
-            error: err
-        }); 
-    }
-
-});
+// Get detail
+router.get('/view-detail', async(req, res) => await handleFunc(req, res));
 
 //get Utilities 
-router.get('/load-utilities', async(req, res) => { 
-
-    //console.log(req);
-
-    let myUrl = req.originalUrl;
-
-     try {
-        let response = await axios.get(service + myUrl,  {
-            headers:{
-                Authorization: `Basic ${verify()}`
-            }
-        });
-        res.json({
-            ok: true,
-            msg: 'estamos en detail',
-            body: response.data
-
-        });        
-    } catch (err) {
-        res.json({
-            error: err
-        }); 
-    }
-
-});
-
-
-
+router.get('/load-utilities',async(req, res) => await handleFunc(req, res));
 
 module.exports = router;
