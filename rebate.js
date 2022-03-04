@@ -1,12 +1,12 @@
 const { Router} = require('express');
 const router = Router();
 const axios = require('axios');
-const service = 'http://localhost:8081';
+const service = 'http://devapi.coolcalc.com';
    
 // Basic authentication 
 const verify = function(){
-    let ClientId = 'silverliningco';
-    let APIKey = 'letmeinple@se';
+    let ClientId = '';
+    let APIKey = '';
     let encoded = Buffer.from(ClientId + ':' + APIKey).toString('base64');
     return encoded;
 }
