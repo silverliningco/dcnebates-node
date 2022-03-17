@@ -42,6 +42,12 @@ var handleFunc = function(req, res) {
 // Get product lines
 router.get('/product-lines', async(req, res) => await handleFunc(req, res));
 
+// get filters
+router.get('/filters', async(req, res) => await handleFunc(req, res));
+
+// Get available rebates
+router.get('/available-rebates', async(req, res) => await handleFunc(req, res));
+
 // Get equipment search
 router.get('/search-equipment', async(req, res) => await handleFunc(req, res));
 
